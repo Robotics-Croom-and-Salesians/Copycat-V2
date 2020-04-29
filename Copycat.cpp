@@ -12,17 +12,24 @@
 #include <vector>
 #include <fstream>
 
+// init the controller
 vex::controller Controller = vex::controller();
 
+// the drivetrain
 vex::motor LeftMotor2 = vex::motor( vex::PORT2 , true);
 vex::motor RightMotor = vex::motor( vex::PORT1 );
 vex::motor LeftMotor = vex::motor( vex::PORT10, true );
 vex::motor RightMotor2 = vex::motor( vex::PORT9);
+//////////////////////////////////////////////////////////
 
+// the block collector
 vex::motor BlockCollector = vex::motor( vex::PORT6, true );
 vex::motor BlockCollector2 = vex::motor( vex::PORT7);
+////////////////////////////////////////////////////
 
+// the tray motor
 vex::motor DropBlock = vex::motor( vex::PORT3);
+///////////////////////////////////
 // ---- END VEXCODE CONFIGURED DEVICES ----
 
 
@@ -32,10 +39,12 @@ int divide = 4;
 
 void moveOnAxisThreesChange(){
 
+  // get a variable for our Axes divided by the amount we want to divide by
   int Axis3Val = Controller.Axis3.position() / divide;
   int Axis1Val = Controller.Axis1.position() / divide;
 
   if(Axis1Val == 0){
+    // go forward 
     LeftMotor.setVelocity(Axis3Val, vex::velocityUnits::pct );
     RightMotor.setVelocity(Axis3Val, vex::velocityUnits::pct );
     RightMotor2.setVelocity(Axis3Val, vex::velocityUnits::pct );
@@ -50,6 +59,7 @@ void moveOnAxisThreesChange(){
   }else if(Axis1Val != 0 && Axis3Val != 0){
 
     if(Axis1Val < 0){
+      // go forward and slight turn
       LeftMotor.setVelocity(Axis3Val - Axis1Val, vex::velocityUnits::pct );
       RightMotor.setVelocity(Axis3Val + Axis1Val, vex::velocityUnits::pct );
       RightMotor2.setVelocity(Axis3Val + Axis1Val, vex::velocityUnits::pct );
@@ -71,6 +81,7 @@ void moveOnAxisThreesChange(){
   }else if( Axis3Val == 0){
 
     if(Axis1Val > 0){ 
+      // turn on the spot
       LeftMotor.setVelocity(-Axis1Val, vex::velocityUnits::pct );
       RightMotor.setVelocity(Axis1Val, vex::velocityUnits::pct );
       RightMotor2.setVelocity(Axis1Val, vex::velocityUnits::pct );
